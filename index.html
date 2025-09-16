@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>🎃 Compte à rebours Halloween 🎃</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+background: black;
+color: orange;
+font-family: "Creepster", cursive, Arial, sans-serif;
+text-align: center;
+margin: 0;
+padding: 0;
+overflow: hidden;
+}
+h1 {
+font-size: 5em;
+margin-top: 80px;
+text-shadow: 4px 4px 15px red;
+}
+#compteur {
+font-size: 4em;
+font-weight: bold;
+margin-top: 40px;
+text-shadow: 4px 4px 15px purple;
+}
+.decor {
+position: fixed;
+bottom: 20px;
+width: 100%;
+display: flex;
+justify-content: center;
+gap: 40px;
+}
+.decor img {
+width: 150px;
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+</head>
+<body>
+<h1>👻 Halloween approche 🎃</h1>
+<div id="compteur"></div>
+
+<div class="decor">
+<img src="https://i.imgur.com/GDq8ztP.png" alt="Citrouille">
+<img src="https://i.imgur.com/ZP6o1um.png" alt="Chauve-souris">
+<img src="https://i.imgur.com/GDq8ztP.png" alt="Citrouille">
+</div>
+
+<!-- Confettis / Bonbons -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+// Compte à rebours Halloween
+const annee = new Date().getFullYear();
+let cible = new Date(`Oct 31, ${annee} 00:00:00`).getTime();
+if (new Date().getTime() > cible) {
+cible = new Date(`Oct 31, ${annee + 1} 00:00:00`).getTime();
+}
+
+const timer = setInterval(function() {
+const maintenant = new Date().getTime();
+const diff = cible - maintenant;
+
+if (diff <= 0) {
+clearInterval(timer);
+document.getElementById("compteur").innerHTML = "🎃 C'est Halloween !!! 👻";
+explosionBonbons(); // Explosion à minuit
+return;
+}
+
+const jours = Math.floor(diff / (1000 * 60 * 60 * 24));
+const heures = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+const secondes = Math.floor((diff % (1000 * 60)) / 1000);
+
+document.getElementById("compteur").innerHTML =
+jours + "j " + heures + "h " + minutes + "m " + secondes + "s ";
+}, 1000);
+
+// Explosion de confettis / bonbons
+function explosionBonbons() {
+const couleurs = ["#FF7518", "#FF0000", "#FFD700", "#00FF00", "#FF69B4"];
+for (let i = 0; i < 5; i++) {
+confetti({
+particleCount: 40,
+angle: 60 + i * 15,
+spread: 55,
+origin: { x: 0.5, y: 0.5 },
+colors: couleurs,
+shapes: ['circle']
+});
+}
+}
+
+// Explosion au chargement
+window.onload = explosionBonbons;
+</script>
+</body>
+</html>
